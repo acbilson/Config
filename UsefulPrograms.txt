@@ -1,0 +1,105 @@
+
+
+# SpaceSniffer is a folder path explorer that creates a visual representation of
+# the chosen directory.  Useful for diagnosing where storage is oversized.
+
+cinst spacesniffer
+
+# VirtualBox is a free virtual machine generator.  Useful for working in other
+# operating systems, such as Linux, or environments with pre-defined settings.
+
+cinst virtualbox
+
+# Vagrant is a pared-down, fully functional local server that uses VirtualBox
+# to generate all the pieces necessary.  Useful for developing web
+# applications on a local machine.
+
+cinst vagrant
+
+# VLC is a media player that can open practically anything.
+
+cinst vlc
+
+# Ctags will generate tags for all source code.  Useless in itself, when
+# integrated with Vim it allows VS-style jumping to declarations and 
+# definitions at the click of the button (and much faster than VS)
+
+cinst ctags
+
+# Mercurial (hg) is a distributed source repository that allows revision history for
+# anything you'd like.  Never again hold onto information 'just in case'.
+
+cinst hg
+
+# NUnit is a C# unit test framework.  I've used 2.6.4, but the newest is 3.0
+
+cinst nunit
+
+# ReSharper is a Visual Studio plugin that standardizes much of the code
+# process, includes many helpful options, and overall improves code.
+
+cinst resharper
+
+# Google Chrome is a web browser that's light-weight and includes add-ons that
+# are helpful for web development and debugging.
+
+cinst googlechrome
+
+# CrapCleaner scans and removes programs computers have factory pre-installed.
+
+cinst ccleaner
+
+# AutoHotKey allows anything to be automated, from a line of text to a series
+# of commands
+
+cinst autohotkey
+
+# ScriptCs is a command prompt that compiles C# code in real-time,
+# making it possible to test code in runtime without compilation.
+
+cinst scriptcs
+
+# NimbleText makes viewing and editing delimited files (like csv) a breeze by
+# using a JavaScript backend to edit and display columns and rows at will
+
+cinst nimbletext
+
+# Git is a source code repository management tool, similar to Mercurial but often
+# used in open-source development.  My particular use of it is downloading Vim packages
+
+cinst git
+
+# Vim is a command-line text editor with powerful scripting capabilities and
+# the end goal of never leaving the keyboard.  It's what I'm using to write
+# this text. Don't forget to install Pathogen!
+# Note: Consider using git to download packages; it's so easy!
+
+cinst vim
+
+# List of helpful packages:
+#	Pathogen (to manage packages)
+# git clone https://github.com/tpope/vim-pathogen ./bundle/pathogen
+
+#	Solarized (A scientifically proven color scheme)
+# git clone https://github.com/altercation/solarized ./bundle/solarized
+
+#	NERDTree (File exploration)
+# git clone https://github.com/scrooloose/nerdtree ./bundle/nerdtree
+
+#	NERDCommenter (Easy comment toggler)
+# git clone https://github.com/scrooloose/nerdcommenter ./bundle/nerdcommenter
+
+#	Syntastic (Syntax highlighter - worked especially good for Python)
+# git clone https://github.com/scrooloose/syntastic ./bundle/syntastic
+
+#	DelimitMate (Add closing parens/braces/etc.)
+# git clone https://github.com/Raimondi/delimitMate ./bundle/delimitMate
+
+#	SuperTab (Auto-complete any word in buffer)
+# git clone https://github.com/ervandew/supertab ./bundle/supertab
+
+#	UltiSnips (Custom snippets)
+# git clone https://github.com/SirVer/ultisnips ./bundle/ultisnips
+
+# Vim-Snippets (A library of snippets usable with UltiSnips out-of-the-box)
+# git clone https://github.com/honza/vim-snippets ./bundle/vim-snippets
