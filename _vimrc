@@ -15,6 +15,7 @@ colorscheme solarized
 " Removes the annoying error sound and the screen flash
 set noerrorbells
 set visualbell
+set t_vb=
 
 " Converts tabs into spaces and define a tab as two spaces
 " set smarttab
@@ -55,8 +56,8 @@ syntax enable
 " * MAPPINGS
 " **********************************
 
-" Sets the map leader to a comma
-set mapleader = ","
+" Assigns the map leader to a comma (not set!)
+let mapleader = ","
 
 " Simplify -
 " opens the directory tree
@@ -79,13 +80,21 @@ nmap <Leader>n :bn<CR>
 " moves to the previous buffer
 nmap <Leader>p :bp<CR>
 " moves to previous buffer and deletes old buffer
-"nmap <Leader>x :bp<CR> :bd #
+nmap <Leader>x :bp<CR> :bd #<CR>
+
+nmap <Leader>/ :nohlsearch<CR>
 
 " Format the selected table declaration into many rows
 vmap <Leader>ft :s/, /,\r  /g<CR>
 
 " Makes setting sql syntax (for .krs files) fast and easy
 nmap <Leader>s :set syntax=sql<CR>
+
+" Surround all instances of Bible verses at the end of lines with parentheses
+nmap <Leader>sbv :%s/\w\+\s\d\+\:\d\+$/(\0)/g
+
+" Custom settings for working with my compilation file
+nmap <Leader>setup :set nowrap \| set nolinebreak \| set encoding=utf-8 \| set foldmethod=marker
 
 " **********************************
 " * SEARCH SETTINGS
@@ -104,16 +113,17 @@ set smartcase
 
 " No backups (the files ending in ~)
 set nobackup
+set noswapfile
 
-" Set the standard shell to Powershell
+" Set the standard shell to Powershell 
 set shell=C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
 
 " Reduces the number of redraws, speeding up actions
 set lazyredraw
 
 " Allows common windows function to work, esp. <C-c> for copy and <C-v> for paste
-behave mswin
-source $VIMRUNTIME/mswin.vim
+"behave mswin
+"source $VIMRUNTIME/mswin.vim
 
 " Sets compatibility with vi to off
 set nocompatible
