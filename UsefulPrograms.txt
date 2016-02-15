@@ -1,4 +1,5 @@
-
+# This is both a list of my favorite programs and a Chocolatey provision file
+# Created By: acbilson@gmail.com
 
 # SpaceSniffer is a folder path explorer that creates a visual representation of
 # the chosen directory.  Useful for diagnosing where storage is oversized.
@@ -26,19 +27,9 @@ cinst vlc
 
 cinst ctags
 
-# Mercurial (hg) is a distributed source repository that allows revision history for
-# anything you'd like.  Never again hold onto information 'just in case'.
-
-cinst hg
-
 # NUnit is a C# unit test framework.  I've used 2.6.4, but the newest is 3.0
 
 cinst nunit
-
-# ReSharper is a Visual Studio plugin that standardizes much of the code
-# process, includes many helpful options, and overall improves code.
-
-cinst resharper
 
 # Google Chrome is a web browser that's light-weight and includes add-ons that
 # are helpful for web development and debugging.
@@ -72,6 +63,7 @@ cinst git
 # Vim is a command-line text editor with powerful scripting capabilities and
 # the end goal of never leaving the keyboard.  It's what I'm using to write
 # this text. Don't forget to install Pathogen!
+
 # Note: Consider using git to download packages; it's so easy!
 
 cinst vim
@@ -103,3 +95,12 @@ cinst vim
 
 # Vim-Snippets (A library of snippets usable with UltiSnips out-of-the-box)
 # git clone https://github.com/honza/vim-snippets ./bundle/vim-snippets
+
+# Vim-EasyMotion (A nifty and fast way to naviate text)
+# git clone https://github.com/easymotion/vim-easymotion ./bundle/vim-easymotion
+
+# Gundo (Visualize the undo tree - probably not used often, but could save my skin some day)
+# git clone https://github.com/vim-scripts/gundo ./bundle/gundo
+
+# Pydiction (Adds the entire Python standard library to the SuperTab plugin's auto-complete)
+# git clone https://github.com/rkulla/pydiction ./bundle/pydiction
