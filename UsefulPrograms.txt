@@ -104,3 +104,13 @@ cinst vim
 
 # Pydiction (Adds the entire Python standard library to the SuperTab plugin's auto-complete)
 # git clone https://github.com/rkulla/pydiction ./bundle/pydiction
+
+# Sublime text is a simple and useful text editor, great for working with languages that don't need
+# a huge amount of compilation support like Python.  Clean and beautiful
+
+cinst sublime
+
+# Markdown Pad2 is a helpful editor for Markdown, which is an efficient way to display clear documents fast
+
+cinst markdownpad
+
