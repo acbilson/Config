@@ -4,10 +4,10 @@ HISTSIZE=1000
 SAVEHIST=1000
 
 # appends history between sessions
-setopt appendhistory 
+setopt appendhistory
 
 # move to folder without appending 'cd'
-setopt autocd 
+setopt autocd
 
 # extends glob expansion, which makes navigation easier
 setopt extendedglob
@@ -48,6 +48,11 @@ fi
 
 if [[ ! -f "$CONFIG_PATH/.zsh_functions" ]]; then
   echo "Functions are not available. Skipping..."
+=======
+
+# theme definitions
+if [ -f ~/.zsh_theme ]; then
+    . ~/.zsh_theme
 fi
 
 # auto loads ssh keys (if keychain is available)
@@ -59,3 +64,16 @@ fi
 if [ -x "$(command -v vim)" ]; then
 	export EDITOR=/usr/bin/vim
 fi
+=======
+# End custom configurations from optional files
+# Begin custom paths
+export PATH="$PATH:$HOME/.local/bin"
+# End custom paths
+
+# Begin Docker configurations
+export DOCKER_HOST=tcp://localhost:2375
+
+# bind the C:/ drive to a new mount point
+mkdir -p /c && sudo /bin/mount --bind /mnt/c /c
+
+# End Docker configurations
