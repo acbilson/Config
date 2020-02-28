@@ -5,3 +5,39 @@ whoip () {
 	echo checking ip address: $1
 	curl http://ipinfo.io/$1
 }
+
+# this function reports the IP addresses that accessed blog posts and which posts were accessed
+
+whoread () {
+	
+	# loads env variables
+	. ~/.zsh_env
+
+	# gets all records in nginx logs that retrieve blog posts
+	zgrep '/posts/' /var/log/nginx/simple-access* \
+		| grep -v "$MY_IP" \
+		| awk -F '|' '{print $2}' \
+		| sort | uniq \
+		> /tmp/ip_query.txt
+
+	echo "All IPs that retrieved blog posts from the website:"
+	cat /tmp/ip_query.txt
+
+	# queries for location info for each ip
+	</tmp/ip_query.txt xargs -I % curl -s http://ipinfo.io/% \
+		| jq -r '.ip + ":\t" + .city + ", " + .region + " " + .country' \
+		> /tmp/ip_locs.txt
+
+	echo "\nThe location of each ip:"
+	cat /tmp/ip_locs.txt
+
+	# all requests to retrieve blog posts
+	zgrep -h '/posts/' /var/log/nginx/simple-access* \
+		| grep -v "$MY_IP" \
+		| grep -v 'favicon.ico' \
+		| awk -F '|' '{print $1,$2,$5}' \
+		> /tmp/ip_posts.txt
+
+	echo "\nThe blog posts and times accessed:"
+	cat /tmp/ip_posts.txt
+}
