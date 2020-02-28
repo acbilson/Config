@@ -2,6 +2,11 @@
 
 # this function returns location and other information from an ip address
 whoip () {
+	if ! hash curl 2>/dev/null; then
+		echo "Please install curl to continue.\ne.g. >sudo apt-get install curl -y";
+		return 1;
+	fi
+
 	echo checking ip address: $1
 	curl http://ipinfo.io/$1
 }
@@ -10,6 +15,16 @@ whoip () {
 
 whoread () {
 	
+	if [ ! -f ~/.zsh_env ]; then
+		echo "Please supply a ~/.zsh_env file with a MY_IP var to continue.";
+		return 1;
+	fi
+
+	if ! hash jq 2>/dev/null; then
+		echo "Please install jq to continue.\ne.g. >sudo apt-get install jq -y";
+		return 1;
+	fi
+
 	# loads env variables
 	. ~/.zsh_env
 
