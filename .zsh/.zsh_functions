@@ -56,3 +56,36 @@ whoread () {
 	echo "\nThe blog posts and times accessed:"
 	cat /tmp/ip_posts.txt
 }
+
+moddirs () {
+	MOD=755;
+
+	if [ ! -d "$1" ]; then
+		echo "Please enter a root directory to begin directory chmod.";
+		return 1;
+	fi
+
+	if [ "$2" ]; then 
+		MOD="$2"
+	fi
+
+
+	find "$1" -type d -exec sudo chmod "$MOD" {} \;
+	echo "directories under $1 set to $MOD";
+}
+
+modfiles () {
+	MOD=644;
+
+	if [ ! -d "$1" ]; then
+		echo "Please enter a root directory to begin file chmod.";
+		return 1;
+	fi
+
+	if [ "$2" ]; then 
+		MOD="$2"
+	fi
+
+	find "$1" -type f -exec sudo chmod "$MOD" {} \;
+	echo "directories under $1 set to $MOD";
+}
