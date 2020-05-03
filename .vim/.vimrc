@@ -12,17 +12,12 @@ function! SetUniversalVariables()
 
   " Assigns root path based on OS - affects value of ~/
   if has("gui_win32")
-    let $HOME = 'C:/Users/abilson'
-  endif
-
-if has("gui_macvim")
-    " This is probably not accurate - needs updating. May not need to do anything
-    " let $HOME = '/Users/acbilson/Dropbox'
+    let $HOME = 'C:/Users/Alex Bilson'
   endif
 
   " Sets the $MYVIMRC to the custom location
   if !exists('$MYVIMRC')
-    let $MYVIMRC = '~/Dropbox/.vim/.vimrc'
+    let $MYVIMRC = '~/.vim/.vimrc'
   endif
 
   " Assigns the map leader to a comma
@@ -834,7 +829,7 @@ function! ExecuteSettings()
   " call ImportPluginsWithVundle()
 
   " adds package path to runtime
-  set packpath+=~/Dropbox/.vim
+  set packpath+=~/.vim
   packloadall
 
   " Set options for all my plugins
