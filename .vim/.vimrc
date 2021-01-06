@@ -1,8 +1,10 @@
 " On an initial install, please follow these two steps to ensure everything works out-of-the-box.
 " Step 1: Create a view folder in the vim executable directory
-" Ex: mkdir 'C:\Program Files (x86)\Vim\vimfiles\view'
-" Step 2: Copy the solarized colorsheme to the vim executable directory
-" Ex: cp C:\Repositories\Dropbox\.vim\bundle\vim-colors-solarized\colors\solarized.vim 'C:\Program Files (x86)\vim\vim80\colors\'
+" Ex: mkdir -p 'VIMROOT\vimfiles\view'
+" Step 2: create package directories
+" Ex: mkdir -p 'VIMROOT\pack\bundle\{start,opt}'
+" Step 3: Copy colorshemes to the vim executable directory
+" Ex: cp VIMROOT\pack\bundle\vim-colors-solarized\colors\solarized.vim 'VIMROOT\vim82\colors\'
 
 " # UNIVERSAL VARIABLES {
 " ##################################
