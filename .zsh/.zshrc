@@ -45,4 +45,12 @@ if [ -f ~/.theme ]; then
     . ~/.theme
 fi
 
-# End custom configurations from optional files
+# auto loads ssh keys (if keychain is available)
+if [ -x "$(command -v keychain)" ]; then
+	eval `keychain --agents ssh --eval git_rsa`
+fi
+
+# sets editor to vim (if vim exists)
+if [ -x "$(command -v vim)" ]; then
+	export EDITOR=/usr/bin/vim
+fi

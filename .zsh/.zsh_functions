@@ -29,7 +29,7 @@ whoread () {
 	. ~/.zsh_env
 
 	# gets all records in nginx logs that retrieve blog posts
-	zgrep '/posts/' /var/log/nginx/simple-access* \
+	zgrep '/posts/\|/books/' /var/log/nginx/simple-access* \
 		| grep -v "$MY_IP" \
 		| awk -F '|' '{print $2}' \
 		| sort | uniq \
@@ -47,7 +47,7 @@ whoread () {
 	cat /tmp/ip_locs.txt
 
 	# all requests to retrieve blog posts
-	zgrep -h '/posts/' /var/log/nginx/simple-access* \
+	zgrep -h '/posts/\|/books/' /var/log/nginx/simple-access* \
 		| grep -v "$MY_IP" \
 		| grep -v 'favicon.ico' \
 		| awk -F '|' '{print $1,$2,$5}' \
@@ -88,4 +88,52 @@ modfiles () {
 
 	find "$1" -type f -exec sudo chmod "$MOD" {} \;
 	echo "directories under $1 set to $MOD";
+}
+
+killuwsgi () {
+	sudo pkill -f uwsgi -9
+}
+
+# this is specifically to set git directories, which require the setuid and setgid flags (+s)
+modgit () {
+	if [ ! -d "$1" ]; then
+		echo "Please enter a root directory to begin file chmod.";
+		return 1;
+	fi
+
+	find "$1" -type d -exec sudo chown pi:web {} \;
+	echo "directories under $1 owned by pi:web";
+	find "$1" -type d -exec sudo chmod u=rwxs,g=rxs,o=r {} \;
+	echo "directories under $1 set to u=rwxs,g=rxs,o=r";
+
+	find "$1" -type f -exec sudo chown pi:web {} \;
+	echo "files under $1 owned by pi:web";
+	find "$1" -type f -exec sudo chmod u=rwxs,g=rxs,o=r {} \;
+	echo "files under $1 set to u=rwxs,g=rxs,o=r";
+}
+
+mylogs () {
+	if [ ! -d "$1" ]; then
+		zgrep -h '' /var/log/nginx/simple-access*
+	fi
+
+	zgrep -h '' /var/log/nginx/simple-access*
+}
+
+# this is an example of tcpdump that writes all dns traffic to a temp file
+dnstraffic () {
+
+	# -i : specifies interface
+	# dst : destination (or src)
+	# port : port 53 is dns
+	# -A : prints hex and ascii request body (tshark is -x)
+	# -f : tshark uses -f 'dst port 53' instead
+	sudo tcpdump -i eth0 dst port 53 -w /tmp/dnstraffic.pcap
+}
+
+# this is an example that reads the captured dns traffic
+readtraffic () {
+
+	# for tcpdump, replace tshark
+	tshark -r /tmp/dnstraffic.pcap
 }

@@ -5,7 +5,8 @@
 # prepend '\'. e.g. >\ls 
 alias ls="ls -lAhF --group-directories-first --time-style=+'%Y/%m/%d %k:%M' --color=auto"
 alias ps="ps -eo pid,euser,stime,cmd --forest"
-alias weblog="grep -v \"$MY_IP\" /var/log/nginx/simple-access.log /var/log/nginx/simple-access.log.1 | awk -F '|' '{print \$2,\$4,\$5}' | sort -k 4 | uniq"
+alias weblog="grep -hv \"$MY_IP\" /var/log/nginx/simple-access.log /var/log/nginx/simple-access.log.1 | awk -F '|' '{print \$1,\$2,\$4,\$5}' | sort -k 4 | uniq"
 alias accesslog="cat /var/log/auth.log /var/log/auth.log.1 | grep -i failed"
-alias ports="netstat -lt"
+alias ports="netstat -tulpn"
 alias apthistory="cat /var/log/apt/history.log"
+alias renew_cert="sudo certbot certonly --manual --preferred-challenges=dns --email acbilson@gmail.com --agree-tos -d alexbilson.dev -d '*.alexbilson.dev'"
