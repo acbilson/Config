@@ -4,19 +4,7 @@
 # FUNCTIONS
 # # # # # # # #
 
-# this function returns location and other information from an ip address
-whoip () {
-	if ! hash curl 2>/dev/null; then
-		echo "Please install curl to continue.\ne.g. >sudo apt-get install curl -y";
-		return 1;
-	fi
-
-	echo checking ip address: $1
-	curl http://ipinfo.io/$1
-}
-
-# this function reports the IP addresses that accessed blog posts and which posts were accessed
-
+## reports IP addresses that accessed blog posts and which posts were accessed
 whoread () {
 
 	if [ ! -f ~/.zsh_env ]; then
@@ -61,6 +49,7 @@ whoread () {
 	cat /tmp/ip_posts.txt
 }
 
+## Runs chmod on all directories recursively
 moddirs () {
 	MOD=755;
 
@@ -78,6 +67,7 @@ moddirs () {
 	echo "directories under $1 set to $MOD";
 }
 
+## Runs chmod on all files recursively
 modfiles () {
 	MOD=644;
 
@@ -94,11 +84,12 @@ modfiles () {
 	echo "directories under $1 set to $MOD";
 }
 
+## kills all uwsgi processes
 killuwsgi () {
 	sudo pkill -f uwsgi -9
 }
 
-# this is specifically to set git directories, which require the setuid and setgid flags (+s)
+## changes the owner and permissions of all files and directories in a git repo and ensures new files will be set to the same ownership and permission
 modgit () {
 	if [ ! -d "$1" ]; then
 		echo "Please enter a root directory to begin file chmod.";
@@ -116,6 +107,7 @@ modgit () {
 	echo "files under $1 set to u=rwxs,g=rxs,o=r";
 }
 
+## prints all nginx logs
 mylogs () {
 	if [ ! -d "$1" ]; then
 		zgrep -h '' /var/log/nginx/simple-access*
@@ -124,7 +116,7 @@ mylogs () {
 	zgrep -h '' /var/log/nginx/simple-access*
 }
 
-# this is an example of tcpdump that writes all dns traffic to a temp file
+## dumps all dns traffic to a temp file
 dnstraffic () {
 
 	# -i : specifies interface
@@ -135,7 +127,7 @@ dnstraffic () {
 	sudo tcpdump -i eth0 dst port 53 -w /tmp/dnstraffic.pcap
 }
 
-# this is an example that reads the captured dns traffic
+## reads the captured traffic from dnstraffic()
 readtraffic () {
 
 	# for tcpdump, replace tshark
