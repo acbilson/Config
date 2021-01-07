@@ -28,41 +28,20 @@ compinit
 
 # Begin custom configurations from optional files
 
-# env file required to define config workdir
-if [[ ! -f ~/.zsh_env ]]; then
-  echo "No env vars detected at ~/.zsh_env; creating template..."
-  echo "#!/bin/sh
-export CONFIG_PATH=~/source/config/acbilson
-" > ~/.zsh_env
-fi
+FILES=(.zsh_common .zsh_module .zsh_theme)
 
-source ~/.zsh_env
+function load_file () {
+  if [[ ! -f ~/"$1" ]]; then
+    echo "~/$1 does not exist. Skipping..."
+  else
+    . ~/"$1"
+  fi
+}
 
-if [[ ! -d "$CONFIG_PATH" ]]; then
-  echo "\$CONFIG_PATH path: $CONFIG_PATH does not exist. Ending zsh customization..." && return 0
-fi
+for file in $FILES; do
+  load_file "$file"
+done
 
-<<<<<<< HEAD:zsh/.zshrc
-if [[ ! -f "$CONFIG_PATH/.zsh_aliases" ]]; then
-  echo "Aliases are not available. Skipping..."
-=======
-if [ -f ~/.zsh_functions ]; then
-    . ~/.zsh_functions
-
-    # runs the lastyear func, which displays last year's memoir (if it exists)
-    lastyear
->>>>>>> 52c85c8... makes zsh folder more robust:zsh/zshrc
-fi
-
-if [[ ! -f "$CONFIG_PATH/.zsh_functions" ]]; then
-  echo "Functions are not available. Skipping..."
-=======
-
-# theme definitions
-if [ -f ~/.zsh_theme ]; then
-    . ~/.zsh_theme
-fi
-#
 # ssh keys
 if [ -f ~/.ssh/git_rsa ]; then
     ssh-add ~/.ssh/git_rsa
@@ -77,7 +56,7 @@ fi
 if [ -x "$(command -v vim)" ]; then
 	export EDITOR=/usr/bin/vim
 fi
-=======
+
 # End custom configurations from optional files
 # Begin custom paths
 export PATH="$PATH:$HOME/.local/bin"

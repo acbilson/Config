@@ -1,5 +1,9 @@
 #!/bin/zsh
 
+# # # # # # # #
+# FUNCTIONS
+# # # # # # # #
+
 # this function returns location and other information from an ip address
 whoip () {
 	if ! hash curl 2>/dev/null; then
@@ -14,7 +18,7 @@ whoip () {
 # this function reports the IP addresses that accessed blog posts and which posts were accessed
 
 whoread () {
-	
+
 	if [ ! -f ~/.zsh_env ]; then
 		echo "Please supply a ~/.zsh_env file with a MY_IP var to continue.";
 		return 1;
@@ -65,7 +69,7 @@ moddirs () {
 		return 1;
 	fi
 
-	if [ "$2" ]; then 
+	if [ "$2" ]; then
 		MOD="$2"
 	fi
 
@@ -82,7 +86,7 @@ modfiles () {
 		return 1;
 	fi
 
-	if [ "$2" ]; then 
+	if [ "$2" ]; then
 		MOD="$2"
 	fi
 
@@ -137,3 +141,18 @@ readtraffic () {
 	# for tcpdump, replace tshark
 	tshark -r /tmp/dnstraffic.pcap
 }
+
+# # # # # # # #
+# ALIASES
+# # # # # # # #
+
+# to temporarily bypass an alias that overwrites the original
+# prepend '\'. e.g. >\ls
+
+alias ls="ls -lAhF --group-directories-first --time-style=+'%Y/%m/%d %k:%M' --color=auto"
+alias ps="ps -eo pid,euser,stime,cmd --forest"
+alias weblog="grep -hv \"$MY_IP\" /var/log/nginx/simple-access.log /var/log/nginx/simple-access.log.1 | awk -F '|' '{print \$1,\$2,\$4,\$5}' | sort -k 4 | uniq"
+alias accesslog="cat /var/log/auth.log /var/log/auth.log.1 | grep -i failed"
+alias ports="netstat -tulpn"
+alias apthistory="cat /var/log/apt/history.log"
+alias renew_cert="sudo certbot certonly --manual --preferred-challenges=dns --email acbilson@gmail.com --agree-tos -d alexbilson.dev -d '*.alexbilson.dev'"
