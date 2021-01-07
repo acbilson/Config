@@ -4,49 +4,49 @@
 # FUNCTIONS
 # # # # # # # #
 
-## reports IP addresses that accessed blog posts and which posts were accessed
-whoread () {
+## filters my IP, then bots, then prints counts
+actual_reads () {
+	zgrep -v $MY_IP /var/log/nginx/simple-access* \
+		| grep -i -v '(.*bot.*)' \
+		| grep -v 'Bytespider' \
+		| grep -e 'comments' -e 'posts' \
+		| awk -F '|' '{print $5}' \
+		| sort | uniq -c | sort -n
+}
 
-	if [ ! -f ~/.zsh_env ]; then
-		echo "Please supply a ~/.zsh_env file with a MY_IP var to continue.";
-		return 1;
-	fi
-
-	if ! hash jq 2>/dev/null; then
-		echo "Please install jq to continue.\ne.g. >sudo apt-get install jq -y";
-		return 1;
-	fi
-
-	# loads env variables
-	. ~/.zsh_env
-
-	# gets all records in nginx logs that retrieve blog posts
-	zgrep '/posts/\|/books/' /var/log/nginx/simple-access* \
-		| grep -v "$MY_IP" \
+## filters my IP, then bots, then prints IP addresses
+actual_readers () {
+	zgrep -v $MY_IP /var/log/nginx/simple-access* \
+		| grep -i -v '(.*bot.*)' \
+		| grep -v 'Bytespider' \
+		| grep -e 'comments' -e 'posts' \
 		| awk -F '|' '{print $2}' \
-		| sort | uniq \
-		> /tmp/ip_query.txt
+		| sort | uniq -c | sort -n
+}
 
-	echo "All IPs that retrieved blog posts from the website:"
-	cat /tmp/ip_query.txt
+## filters my IP, then bots, then prints location information for my top n readers. Defaults to 10.
+top_reader_info () {
+	VIEWER_COUNT=10
 
-	# queries for location info for each ip
-	</tmp/ip_query.txt xargs -I % curl -s http://ipinfo.io/% \
-		| jq -r '.ip + ":\t" + .city + ", " + .region + " " + .country' \
-		> /tmp/ip_locs.txt
+	if [ "$1" ]; then
+		VIEWER_COUNT="$1"
+	fi
 
-	echo "\nThe location of each ip:"
-	cat /tmp/ip_locs.txt
+	# filters my IP, then bots, then prints counts
+	zgrep -v $MY_IP /var/log/nginx/simple-access* \
+		| grep -i -v '(.*bot.*)' \
+		| grep -v 'Bytespider' \
+		| grep -e 'comments' -e 'posts' \
+		| awk -F '|' '{print $2}' \
+		| sort | uniq -c | sort -n | tail -n $VIEWER_COUNT \
+		| awk '{print $2}' > /tmp/top_viewers.txt
 
-	# all requests to retrieve blog posts
-	zgrep -h '/posts/\|/books/' /var/log/nginx/simple-access* \
-		| grep -v "$MY_IP" \
-		| grep -v 'favicon.ico' \
-		| awk -F '|' '{print $1,$2,$5}' \
-		> /tmp/ip_posts.txt
+	# retrieves IP address info for top viewers
+	</tmp/top_viewers.txt xargs -I % curl -s http://ipinfo.io/% \
+			| jq -r '.ip + ":\t\t" + .city + ", " + .region + " " + .country' \
+			> /tmp/top_viewer_info.txt
 
-	echo "\nThe blog posts and times accessed:"
-	cat /tmp/ip_posts.txt
+	cat /tmp/top_viewer_info.txt
 }
 
 ## Runs chmod on all directories recursively
