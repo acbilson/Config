@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+# Loads Git SSH key
+if [ -f ~/.ssh/git_rsa ]; then
+    ssh-add ~/.ssh/git_rsa
+fi
+
+# bind the C:/ drive to a new mount point
+#export DOCKER_HOST=tcp://localhost:2375
+#mkdir -p /c && sudo /bin/mount --bind /mnt/c /c

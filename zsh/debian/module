@@ -156,3 +156,5 @@ alias accesslog="cat /var/log/auth.log /var/log/auth.log.1 | grep -i failed"
 alias ports="netstat -tulpn"
 alias apthistory="cat /var/log/apt/history.log"
 alias renew_cert="sudo certbot certonly --manual --preferred-challenges=dns --email acbilson@gmail.com --agree-tos -d alexbilson.dev -d '*.alexbilson.dev'"
+
+alias weblog_v2="cat /var/log/nginx/simple-access.log /var/log/nginx/simple-access.log.1 | grep -v '216.80.113.4' | awk -F '|' '{print \$2,\$4,\$5}' | sort -k 4 | uniq"

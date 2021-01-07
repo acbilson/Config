@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+# auto loads ssh keys (if keychain is available)
+if [ -x "$(command -v keychain)" ]; then
+	eval `keychain --agents ssh --eval git_rsa`
+fi
+
+# adds .local/bin to path
+export PATH="$PATH:$HOME/.local/bin"

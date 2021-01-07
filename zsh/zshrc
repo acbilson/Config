@@ -28,7 +28,7 @@ compinit
 
 # Begin custom configurations from optional files
 
-FILES=(.zsh_common .zsh_module .zsh_theme)
+FILES=(.zsh_theme .zsh_common .zsh_module .zsh_settings)
 
 function load_file () {
   if [[ ! -f ~/"$1" ]]; then
@@ -42,31 +42,4 @@ for file in $FILES; do
   load_file "$file"
 done
 
-# ssh keys
-if [ -f ~/.ssh/git_rsa ]; then
-    ssh-add ~/.ssh/git_rsa
-fi
-
-# auto loads ssh keys (if keychain is available)
-if [ -x "$(command -v keychain)" ]; then
-	eval `keychain --agents ssh --eval git_rsa`
-fi
-
-# sets editor to vim (if vim exists)
-if [ -x "$(command -v vim)" ]; then
-	export EDITOR=/usr/bin/vim
-fi
-
 # End custom configurations from optional files
-# Begin custom paths
-export PATH="$PATH:$HOME/.local/bin"
-# End custom paths
-
-# Begin Docker configurations
-
-# bind the C:/ drive to a new mount point
-# WINDOWS ONLY
-#export DOCKER_HOST=tcp://localhost:2375
-#mkdir -p /c && sudo /bin/mount --bind /mnt/c /c
-
-# End Docker configurations

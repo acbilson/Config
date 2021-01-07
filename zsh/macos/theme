@@ -2,5 +2,3 @@
 
 NEWLINE=$'\n'
 PROMPT="%F{cyan}%M-%n %(?.%F{green}√.%F{red}?%?)%f %B%F{240}%~%f%b ${NEWLINE}$ "
-
-function exists () { type -p "$1" > /dev/null || return 1 }
