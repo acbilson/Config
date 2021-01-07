@@ -28,21 +28,26 @@ compinit
 
 # Begin custom configurations from optional files
 
-## Alias definitions.
-
-if [ -f ~/.zsh_aliases ]; then
-    . ~/.zsh_aliases
+# env file required to define config workdir
+if [[ ! -f ~/.zsh_env ]]; then
+  echo "No env vars detected at ~/.zsh_env; creating template..."
+  echo "#!/bin/sh
+export CONFIG_PATH=~/source/config/acbilson
+" > ~/.zsh_env
 fi
 
-# Function definitions
+source ~/.zsh_env
 
-if [ -f ~/.zsh_functions ]; then
-    . ~/.zsh_functions
+if [[ ! -d "$CONFIG_PATH" ]]; then
+  echo "\$CONFIG_PATH path: $CONFIG_PATH does not exist. Ending zsh customization..." && return 0
 fi
 
-# theme definitions
-if [ -f ~/.theme ]; then
-    . ~/.theme
+if [[ ! -f "$CONFIG_PATH/.zsh_aliases" ]]; then
+  echo "Aliases are not available. Skipping..."
+fi
+
+if [[ ! -f "$CONFIG_PATH/.zsh_functions" ]]; then
+  echo "Functions are not available. Skipping..."
 fi
 
 # auto loads ssh keys (if keychain is available)
