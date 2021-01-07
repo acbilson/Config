@@ -1,7 +1,7 @@
 #!/bin/zsh
 
-local CONFIG_DIR=$(realpath ~/source/config/zsh)
-local SYM_DIR=$(realpath ~)
+local CONFIG_DIR=$HOME/source/config/zsh
+local SYM_DIR=$HOME
 local OS=debian
 
 [[ -d $CONFIG_DIR ]] || { echo "\$CONFIG_DIR path does not exist. Exiting..." && return 0 }
@@ -16,8 +16,8 @@ for i in $INDICES; do
   file_src="$CONFIG_DIR/$FILES[$i]"
   file_dest="$SYM_DIR/$SYMS[$i]"
 
-  if [[ -s $file_dest ]]; then 
-    echo "EXISTS: $file_dest -> $(readlink -f $file_dest)"
+  if [[ -s $file_dest ]]; then
+    echo "EXISTS: $file_dest -> $(readlink $file_dest)"
   else
     ln -s $file_src $file_dest
     echo "CREATED: $file_dest -> $file_src"
