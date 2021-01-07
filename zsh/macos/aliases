@@ -1,0 +1,63 @@
+#!/bin/zsh
+
+# to temporarily bypass an alias that overwrites the original
+# prepend '\'. e.g. >\ls
+
+alias ls="exa -l"
+
+# can now use ssh web b/c/o .sshconfig
+#alias pil="sudo ssh -i ~/.ssh/pi_rsa -p 3492 pi@raspberrypi.local"
+#alias pir="sudo ssh -i ~/.ssh/pi_rsa -p 3492 pi@216.80.113.4"
+
+# decided to remove mosh
+# alias mosh_web="mosh -p 3492 --ssh=\"ssh -p 3492\" pi@raspberrypi.local"
+
+# LINUX ONLY
+#alias ls="ls -lAhF --group-directories-first --time-style=+'%Y/%m/%d %k:%M' --color=auto"
+
+# also consider pstree -p
+alias ps="ps -eo pid,euser,stime,cmd --forest"
+alias ports="netstat -lt"
+
+# website specific
+alias weblog="cat /var/log/nginx/simple-access.log /var/log/nginx/simple-access.log.1 | grep -v '216.80.113.4' | awk -F '|' '{print \$2,\$4,\$5}' | sort -k 4 | uniq"
+alias apthistory="cat /var/log/apt/history.log"
+
+export DOCKER_SHELL=/bin/bash
+
+# Docker functions
+docker-shell () {
+  if [ "$1" = "" ]; then
+    LATEST_CONTAINER=$(dk ps -l --format "{{.ID}}")
+    docker exec -it "$LATEST_CONTAINER" ${DOCKER_SHELL}
+  fi
+  docker exec -it "$1" ${DOCKER_SHELL}
+}
+docker-root-shell () {
+  if [ "$1" = "" ]; then
+    LATEST_CONTAINER=$(dk ps -l --format "{{.ID}}")
+    docker exec -it --user root "$LATEST_CONTAINER" ${DOCKER_SHELL}
+  fi
+  docker exec -it --user root "$1" ${DOCKER_SHELL}
+}
+
+# Docker aliases
+alias dk="docker"
+alias dkcp="docker-compose"
+alias dkc="docker container"
+alias dkl="docker logs"
+alias dki="docker images"
+alias dksh="docker-shell"
+alias dkrsh="docker-root-shell"
+
+# Location aliases
+alias blog="~/source/alexbilson.dev"
+alias content="~/source/chaos-content"
+alias theme="~/source/chaos-theme"
+
+# Other aliases
+alias make="make -B"
+alias jour="vim ~/journal/memoir_2021.txt"
+
+# todo.sh aliases
+alias todo="todo.sh"
