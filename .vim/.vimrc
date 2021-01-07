@@ -17,7 +17,7 @@ function! SetUniversalVariables()
 
   " Sets the $MYVIMRC to the custom location
   if !exists('$MYVIMRC')
-    let $MYVIMRC = '~/.vim/.vimrc'
+    let $MYVIMRC = '~/.vimrc'
   endif
 
   " Assigns the map leader to a comma
@@ -54,8 +54,8 @@ function! SetBasicSettings()
   " sets the default encoding to UTF-8
   set encoding=utf-8
 
-  " Line numbers
-  set number
+  " Line numbers relative to cursor
+  set number relativenumber
 
   " Shows the last command in the bottom bar
   set showcmd
@@ -64,7 +64,7 @@ function! SetBasicSettings()
   set showmatch
 
   " The characters before vim auto wraps the buffer
-  set textwidth=120
+  set textwidth=0
 
   " Removes the auto line break feature
   set formatoptions-=t
@@ -172,6 +172,12 @@ function! SetBasicMappings()
 
   " selects the entire file
   nnoremap <Leader>a ggvG$
+
+  " adds a new journal entry
+  nnoremap <Leader>n :1,7y<ENTER>ggPjwww
+
+  " experimental: switches the Escape key to df
+  inoremap df <ESC>
 
 endfunction
 " }
@@ -314,7 +320,7 @@ function! SetMacOptions()
 
   " Sets the color scheme
   set background=light
-  colorscheme solarized
+  colorscheme monokai
 
   " Expands MacVim to fill the screen
   set lines=999
@@ -600,8 +606,8 @@ function! SetVimTextobjQuoteOptions()
   " **********************************
   " Only run this on the Mac
   if has("gui_macvim")
-    au BufWinEnter *.md call textobj#quote#init()
-    au BufWinEnter *.txt call textobj#quote#init()
+    " au BufWinEnter *.md call textobj#quote#init()
+    "au BufWinEnter *.txt call textobj#quote#init()
   endif
 
 endfunction
