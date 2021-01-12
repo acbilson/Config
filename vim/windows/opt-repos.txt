@@ -1,0 +1,12 @@
+https://github.com/ctrlpvim/ctrlp.vim.git
+https://github.com/ervandew/supertab.git
+https://github.com/vim-syntastic/syntastic.git
+https://github.com/majutsushi/tagbar.git
+https://github.com/ron89/thesaurus_query.vim.git
+https://github.com/SirVer/ultisnips.git
+https://github.com/reedes/vim-colors-pencil.git
+https://github.com/altercation/vim-colors-solarized.git
+https://github.com/rhysd/vim-grammarous.git
+https://github.com/crusoexia/vim-monokai.git
+https://github.com/reedes/vim-textobj-quote.git
+https://github.com/reedes/vim-wordy.git

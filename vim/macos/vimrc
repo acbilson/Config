@@ -1,0 +1,698 @@
+" # UNIVERSAL VARIABLES {
+" ##################################
+function! SetUniversalVariables()
+
+  " Sets the $MYVIMRC to the custom location
+  if !exists('$MYVIMRC')
+    let $MYVIMRC = '~/.vimrc'
+  endif
+
+  " Assigns the map leader to a comma
+  let g:mapleader = ","
+
+endfunction
+" }
+" # BASIC SETTINGS {
+" ##################################
+function! SetBasicSettings()
+
+  " Set compatibility with vi to off
+  set nocompatible
+
+  " **********************************
+  " * SEARCH
+  " **********************************
+  " Searches in real-time, and highlights matches
+  set incsearch
+  set hlsearch
+
+  " Uses lazy case matching
+  set smartcase
+
+  " **********************************
+  " * VIEW
+  " **********************************
+  " Converts tabs into spaces and define a tab as two spaces
+  " set smarttab
+  set expandtab
+  set tabstop=2
+  set shiftwidth=2
+
+  " sets the default encoding to UTF-8
+  set encoding=utf-8
+
+  " Line numbers relative to cursor
+  set number relativenumber
+
+  " Shows the last command in the bottom bar
+  set showcmd
+
+  " Shows matching parenthesis
+  set showmatch
+
+  " The characters before vim auto wraps the buffer
+  set textwidth=0
+
+  " Removes the auto line break feature
+  set formatoptions-=t
+
+  " Automatically indents the next line
+  set autoindent
+
+  " Wraps lines in the screen, appending a break befor them to indicate
+  " that they are on the same line, only wrapped
+  set linebreak
+  set showbreak=+++
+
+  " Automatically change the working directory to the file location
+  set autochdir
+
+  " Allows Vim to auto-select syntax highlighting
+  syntax enable
+
+  " Reduces the number of redraws, speeding up actions
+  set lazyredraw
+
+  " Removes all the options from the gui to make it smaller
+  if has('gui_running')
+    set guioptions=
+  endif
+
+  " **********************************
+  " * BACKUPS
+  " **********************************
+  " No backups (the files ending in ~)
+  set nobackup
+  set noswapfile
+
+endfunction
+" }
+" # BASIC MAPPINGS {
+" ##################################
+function! SetBasicMappings()
+
+  " **********************************
+  " * NAVIGATION
+  " **********************************
+  " Uses block movement by default
+  nnoremap <silent> k gk
+  nnoremap <silent> j gj
+
+  " Creates new lines without entering edit mode
+  " nnoremap <silent> o o<Esc>
+  " nnoremap <silent> O O<Esc>
+
+  " **********************************
+  " * WINDOW
+  " **********************************
+  " Horizontal resizing as a fraction of the total
+  nnoremap <Leader>< :exe 'vertical resize ' . (winwidth(0) * 3/2)<CR>
+  nnoremap <Leader>> :exe 'vertical resize ' . (winwidth(0) * 2/3)<CR>
+
+  " Vertical resizing as a fraction of the total
+  nnoremap <Leader>+ :exe 'resize ' . (winheight(0) * 3/2)<CR>
+  nnoremap <Leader>- :exe 'resize ' . (winheight(0) * 2/3)<CR>
+
+  " **********************************
+  " * TAGS
+  " **********************************
+  " moves forward on the current tag
+  nnoremap <Leader>n <C-]>
+  " moves backward to the previous tag
+  nnoremap <Leader>p <C-T>
+
+  " **********************************
+  " * WINDOW
+  " **********************************
+  " Simplifies moving between windows
+  nnoremap <Leader>h <C-w>h
+  nnoremap <Leader>l <C-w>l
+  nnoremap <Leader>k <C-w>k
+  nnoremap <Leader>j <C-w>j
+
+  " **********************************
+  " * BUFFER
+  " **********************************
+  " moves to previous buffer and deletes old buffer
+  nnoremap <Leader>x :bp<CR> :bd #<CR>
+
+  " hides the current buffer
+  " nnoremap <Leader>h :hide<CR>
+
+  " **********************************
+  " * SPELLING
+  " **********************************
+  " Jump to the next misspelled word
+  nnoremap <Leader>s ]s
+
+  " Display possible modifications
+  nnoremap <Leader>m z=
+
+  " **********************************
+  " * MISC
+  " **********************************
+  " clears the search highlighting
+  nnoremap <Leader>/ :nohlsearch<CR>
+
+  " formats the current paragraph
+  nnoremap <Leader>q gwap
+
+  " selects the entire file
+  nnoremap <Leader>a ggvG$
+
+  " adds a new journal entry
+  nnoremap <Leader>n :1,7y<ENTER>ggPjwww
+
+  " experimental: switches the Escape key to df
+  inoremap df <ESC>
+
+endfunction
+" }
+" # CLIPBOARD MAPPINGS {
+" ##################################
+function! SetClipboardMappings()
+
+  " Changes autocomplete from the clunky Ctrl-P to tab
+  "inoremap <TAB> <C-P>
+
+  " Changes the visual block mode to Ctrl-b, then sets
+  " it to the clipboard paste command
+  nnoremap <C-b> <C-v>
+  nnoremap <C-v> "*p
+
+  " Sets the copy command to Ctrl-c
+  vnoremap <C-c> "*y
+
+endfunction
+" }
+" # AUTOCOMMANDS (Event Handlers) {
+" ##################################
+function! SetAutocommands()
+" Notes:
+" ? - Skips if the buffer has no name (new file)
+" silent - doesn't produce output.  The bang (!) silences errors too
+
+  " **********************************
+  " * ESSENTIAL AUTOCOMMANDS FOR ALL FILES
+  " **********************************
+  augroup vimrc_essential
+    autocmd!
+
+    " Removes the annoying error sound and the screen flash
+    autocmd GUIEnter * set vb t_vb=
+
+    " Strips trailing whitespace
+    autocmd BufWritePre ?* :%s/\s\+$//e
+
+    " Converts windows line breaks to unix
+    autocmd BufWinEnter ?*.txt silent! :%s//\r/g
+    autocmd BufWinEnter ?*.cs silent! :%s//\r/g
+    autocmd BufWinEnter ?*.vb silent! :%s//\r/g
+
+  augroup END
+
+  " **********************************
+  " * FOLDING AUTOCOMMANDS
+  " **********************************
+  augroup vimrc_folding
+    autocmd!
+
+    " Saves the current folds when the buffer is closed
+    " and loads the folds when it's re-opened
+    autocmd BufWinLeave ?* mkview!
+    autocmd BufWinEnter ?* loadview
+
+    " Sets the fold method and marker for .vimrc files
+    autocmd BufWinEnter .vimrc setlocal foldmarker={,}
+    autocmd BufWinEnter .vimrc setlocal foldmethod=marker
+
+    " Does the same for markdown
+    autocmd FileType markdown setlocal foldmarker={,}
+    autocmd FileType markdown setlocal foldmethod=marker
+
+  augroup END
+
+  " **********************************
+  " * MARKDOWN AUTOCOMMANDS
+  " **********************************
+  augroup vimrc_markdown
+    autocmd!
+
+    " Sets encoding to unicode when working with Markdown
+    autocmd FileType markdown setlocal encoding=utf-8
+
+  augroup END
+
+endfunction
+" }
+" # MAC OPTIONS {
+" ##################################
+function! SetMacOptions()
+
+  " **********************************
+  " * MAC SETTINGS
+  " **********************************
+
+  " Set the font to something more pleasant
+  set guifont=Courier:h16
+
+  " Sets the color scheme
+  set background=light
+  colorscheme monokai
+
+  " Expands MacVim to fill the screen
+  set lines=999
+  set columns=999
+
+endfunction
+" }
+" # COMMON FUNCTIONS {
+" ##################################
+function! SetCommonFunctions()
+
+  " Opens a new window with the contents of the current directory
+  function! ShowCurrentDirectory()
+
+    " Get the current directory
+    let local_ls = system("ls")
+
+    " Open a read-only split
+    vsplit __Local_Directory__
+    normal! ggdG
+    setlocal buftype=nofile
+
+    " Insert current directory in split
+    call append(0, split(local_ls, '\v\n'))
+
+  endfunction
+
+" Opens a new window with notes about commands I want to learn
+  function! ShowCommandList()
+
+    6split ~/.vim/commands.md
+
+  endfunction
+
+  " Sets this to a simple map
+  nnoremap <Leader>c :call ShowCommandList()<CR>
+
+  " Sets global variables for toggle
+  let g:writing_styles = ['default', 'coding', 'writing']
+  let g:current_writing_style = g:writing_styles[0]
+
+  function! SetCodingStyle()
+
+    " **********************************
+    " * CODING STYLE SETTINGS
+    " **********************************
+    set background=dark
+
+    " Turn Goyo off
+    execute 'Goyo!'
+
+    " Return the width to my usual setting
+    set textwidth=120
+
+    " Lint file on save
+    " let g:syntastic_mode_map = { "mode": "active" }
+
+    " **********************************
+    " * CODING STYLE MAPPINGS
+    " **********************************
+    " Set <Leader>s to syntastic check
+    nnoremap <Leader>s :SyntasticCheck
+
+  endfunction
+
+  function! SetWritingStyle()
+
+    " **********************************
+    " * WRITING STYLE SETTINGS
+    " **********************************
+    set background=light
+
+    " Turn Goyo on
+    execute 'Goyo 50%x90%'
+
+    " Set the width to something that wraps better
+    " Takes the width of the window and halves the textwidth
+    " to fit (based on first number passed to Goyo)
+    let &textwidth=&columns/2
+
+    " **********************************
+    " * CODING STYLE MAPPINGS
+    " **********************************
+  " Set <Leader>s to jump to next misspelled word
+    nnoremap <Leader>s ]s
+
+  endfunction
+
+  function! SetDefaultStyle()
+
+    " **********************************
+    " * DEFAULT STYLE SETTINGS
+    " **********************************
+    set background=light
+
+    " Turn Goyo off
+    execute 'Goyo!'
+
+    " Return the width to my usual setting
+    set textwidth=120
+
+  endfunction
+
+  " Toggles the vim style settings for different types of writing
+  function! ToggleWritingStyle()
+  " Note: ==? means "case-insensitive string comparison no matter what the user has set
+
+    if g:current_writing_style ==? 'coding'
+
+      call SetCodingStyle()
+      let g:current_writing_style = g:writing_styles[2]
+
+    elseif g:current_writing_style ==? 'writing'
+
+      call SetWritingStyle()
+      let g:current_writing_style = g:writing_styles[0]
+
+    elseif g:current_writing_style ==? 'default'
+
+      call SetDefaultStyle()
+      let g:current_writing_style = g:writing_styles[1]
+
+    endif
+
+  endfunction
+
+  " Sets the toggle to an easy-to-use map
+  nnoremap <Leader>w :call ToggleWritingStyle()<CR>
+
+  " Adds a carriage return after closing HTML tags to make them easier to read
+  function! ParseHTML()
+
+    execute("s%/<\/[A-Za-z]*>/\0\r/g")
+
+  endfunction
+
+  " Converts the current content to HTML from Markdown and copies to the clipboard
+  function! CopyMarkdownToHTML()
+
+  if has("gui_macvim")
+    execute("%w ! cat | pandoc -f markdown -t html | pbcopy")
+  endif
+
+  endfunction
+
+endfunction
+" }
+" # PLUGIN OPTIONS {
+" # NERDTREE OPTIONS {
+" ##################################
+function! SetNerdtreeOptions()
+
+  " **********************************
+  " * NERDTREE MAPPINGS
+  " **********************************
+
+  " simplify the way I open the directory tree
+  nnoremap <Leader>t :NERDTreeToggle<CR>
+
+endfunction
+" }
+" # EASY-MOTION OPTIONS {
+" ##################################
+function! SetEasyMotionOptions()
+
+  " **********************************
+  " * EASY MOTION MAPPINGS
+  " **********************************
+  " Jump to the next '_' which is super useful when editing test names
+  nnoremap <Leader>_ ,,f_
+
+  " Simplifies the most common uses
+  "nmap <Leader>f ,,f
+  "nmap <Leader>j ,,j
+  nmap <Leader>k ,,k
+
+endfunction
+" }
+" # SYNTASTIC OPTIONS {
+" ##################################
+function! SetSyntasticOptions()
+
+  " **********************************
+  " * SYNTASTIC SETTINGS
+  " **********************************
+  " Don't check on open or close - faster
+  let g:syntastic_check_on_open = 0
+  let g:syntastic_check_on_wq = 0
+
+  " Don't check unless I call SyntasticCheck
+  let g:syntastic_mode_map = { "mode": "passive" }
+
+  let g:syntastic_always_populate_loc_list = 1
+  let g:syntastic_auto_loc_list = 1
+  let g:syntastic_aggregate_errors = 1
+
+  " Sets linters/checkers for common files
+  let g:syntastic_javascript_checkers = ['eshint']
+  let g:syntastic_python_checkers = ['flake8']
+
+  " **********************************
+  " * SYNTASTIC MAPPINGS
+  " **********************************
+  " Jump to the next error in the location-list
+  nnoremap <Leader>e :lnext<CR>
+
+endfunction
+" }
+" # VIM-AIRLINE OPTIONS {
+" ##################################
+function! SetVimAirlineOptions()
+
+  " Causes the status bar to always appear
+  set laststatus=2
+
+endfunction
+" }
+" # PYDICTION OPTIONS {
+" ##################################
+function! SetPydictionOptions()
+
+  " Allow filetype plugins
+  filetype plugin on
+
+  " Set the location of the dictionary
+  let g:pydiction_location = '~/Dropbox/.vim/bundle/pydiction/complete-dict'
+
+  " Sets the number of items displayed (8 is default)
+  let g:pydiction_menu_height = 8
+
+endfunction
+" }
+" # VIM-JAVASCRIPT OPTIONS {
+" ##################################
+function! SetVimJavascriptOptions()
+
+  " Enables flow (whatever that is)
+  let g:javascript_plugin_flow = 1
+
+endfunction
+" }
+" # LIMELIGHT OPTIONS {
+" ##################################
+function! SetLimelightOptions()
+
+  " **********************************
+  " * LIMELIGHT AUTOCOMMANDS
+  " **********************************
+  " This matches limelight with goyo
+  au! User GoyoEnter Limelight
+  au! User GoyoLeave Limelight!
+
+endfunction
+" }
+" # VIM-TEXTOBJ-QUOTE OPTIONS {
+" ##################################
+function! SetVimTextobjQuoteOptions()
+
+  " **********************************
+  " * VIM-TEXTOBJ-QUOTE AUTOCOMMANDS
+  " **********************************
+  " Only run this on the Mac
+  if has("gui_macvim")
+    " au BufWinEnter *.md call textobj#quote#init()
+    "au BufWinEnter *.txt call textobj#quote#init()
+  endif
+
+endfunction
+" }
+" # TAGBAR OPTIONS {
+" ##################################
+function! SetTagbarOptions()
+
+  " **********************************
+  " * MAPPINGS
+  " **********************************
+  nnoremap <Leader>b :TagbarToggle<CR>
+
+endfunction
+" }
+" # ULTISNIPS OPTIONS {
+" ##################################
+function! SetUltisnipsOptions()
+
+  " **********************************
+  " * Settings
+  " **********************************
+  let g:UltiSnipsExpandTrigger="<tab>"
+  let g:UltiSnipsJumpForwardTrigger="<c-b>"
+  let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+  " If you want :UltiSnipsEdit to split your window.
+  let g:UltiSnipsEditSplit="vertical"
+
+  " **********************************
+  " * Mappings
+  " **********************************
+  inoremap <tab> :call UltiSnips#ExpandSnippetOrJump()<CR>
+
+endfunction
+" }
+" # ALE OPTIONS {
+" ##################################
+function! SetAleOptions()
+
+endfunction
+" }
+" # ASYNC-COMPLETE OPTIONS {
+" ##################################
+function! SetAsyncCompleteOptions()
+
+" adds tab completion like intellisense
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+
+" sets intellisense to view automatically
+let g:asyncomplete_auto_popup = 1
+
+endfunction
+" }
+" # OMNISHARP OPTIONS {
+" ##################################
+function! SetOmniSharpOptions()
+
+" Required for this plugin to work
+filetype indent plugin on
+
+" Use the stdio OmniSharp-roslyn server
+let g:OmniSharp_server_stdio = 1
+
+" Set the type lookup function to use the preview window instead of echoing it
+"let g:OmniSharp_typeLookupInPreview = 1
+
+" Timeout in seconds to wait for a response from the server
+let g:OmniSharp_timeout = 5
+
+" Don't autoselect first omnicomplete option, show options even if there is only
+" one (so the preview documentation is accessible). Remove 'preview' if you
+" don't want to see any documentation whatsoever.
+set completeopt=longest,menuone,preview
+
+" Fetch full documentation during omnicomplete requests.
+" By default, only Type/Method signatures are fetched. Full documentation can
+" still be fetched when you need it with the :OmniSharpDocumentation command.
+"let g:omnicomplete_fetch_full_documentation = 1
+
+" Set desired preview window height for viewing documentation.
+" You might also want to look at the echodoc plugin.
+set previewheight=5
+
+" Tell ALE to use OmniSharp for linting C# files, and no other linters.
+let g:ale_linters = { 'cs': ['OmniSharp'] }
+
+" Update semantic highlighting on BufEnter and InsertLeave
+let g:OmniSharp_highlight_types = 2
+
+augroup omnisharp_commands
+    autocmd!
+
+    " Show type information automatically when the cursor stops moving
+    autocmd CursorHold *.cs call OmniSharp#TypeLookupWithoutDocumentation()
+
+    " The following commands are contextual, based on the cursor position.
+    autocmd FileType cs nnoremap <buffer> gd :OmniSharpGotoDefinition<CR>
+    autocmd FileType cs nnoremap <buffer> <Leader>fi :OmniSharpFindImplementations<CR>
+    autocmd FileType cs nnoremap <buffer> <Leader>fs :OmniSharpFindSymbol<CR>
+    autocmd FileType cs nnoremap <buffer> <Leader>fu :OmniSharpFindUsages<CR>
+
+    " Finds members in the current buffer
+    autocmd FileType cs nnoremap <buffer> <Leader>fm :OmniSharpFindMembers<CR>
+
+    autocmd FileType cs nnoremap <buffer> <Leader>fx :OmniSharpFixUsings<CR>
+    autocmd FileType cs nnoremap <buffer> <Leader>tt :OmniSharpTypeLookup<CR>
+    autocmd FileType cs nnoremap <buffer> <Leader>dc :OmniSharpDocumentation<CR>
+    autocmd FileType cs nnoremap <buffer> <C-\> :OmniSharpSignatureHelp<CR>
+    autocmd FileType cs inoremap <buffer> <C-\> <C-o>:OmniSharpSignatureHelp<CR>
+
+    " Navigate up and down by method/property/field
+    autocmd FileType cs nnoremap <buffer> <C-k> :OmniSharpNavigateUp<CR>
+    autocmd FileType cs nnoremap <buffer> <C-j> :OmniSharpNavigateDown<CR>
+
+    " Find all code errors/warnings for the current solution and populate the quickfix window
+    autocmd FileType cs nnoremap <buffer> <Leader>cc :OmniSharpGlobalCodeCheck<CR>
+augroup END
+
+" Contextual code actions (uses fzf, CtrlP or unite.vim when available)
+nnoremap <Leader><Space> :OmniSharpGetCodeActions<CR>
+" Run code actions with text selected in visual mode to extract method
+xnoremap <Leader><Space> :call OmniSharp#GetCodeActions('visual')<CR>
+
+" Rename with dialog
+nnoremap <Leader>nm :OmniSharpRename<CR>
+nnoremap <F2> :OmniSharpRename<CR>
+" Rename without dialog - with cursor on the symbol to rename: `:Rename newname`
+command! -nargs=1 Rename :call OmniSharp#RenameTo("<args>")
+
+nnoremap <Leader>cf :OmniSharpCodeFormat<CR>
+
+" Start the omnisharp server for the current solution
+nnoremap <Leader>ss :OmniSharpStartServer<CR>
+nnoremap <Leader>sp :OmniSharpStopServer<CR>
+
+endfunction
+" }
+" # Execute My Settings {
+" ##################################
+function! ExecuteSettings()
+
+  call SetUniversalVariables()
+  call SetBasicSettings()
+  call SetBasicMappings()
+  call SetClipboardMappings()
+  call SetAutocommands()
+  call SetCommonFunctions()
+  call SetMacOptions()
+
+  " adds package path to runtime
+  set packpath+=~/.vim
+  packloadall
+
+  " Set options for all my plugins
+  call SetNerdtreeOptions()
+  call SetEasyMotionOptions()
+  "call SetSyntasticOptions()
+  call SetVimAirlineOptions()
+  "call SetPydictionOptions()
+  "call SetVimJavascriptOptions()
+  "call SetLimelightOptions()
+  "call SetVimTextobjQuoteOptions()
+  "call SetTagbarOptions()
+  "call SetUltisnipsOptions()
+  "call SetAsyncCompleteOptions()
+  "call SetAleOptions()
+  "call SetOmniSharpOptions()
+
+endfunction
+" }
+call ExecuteSettings()

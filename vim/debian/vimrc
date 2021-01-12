@@ -1,19 +1,6 @@
-" On an initial install, please follow these two steps to ensure everything works out-of-the-box.
-" Step 1: Create a view folder in the vim executable directory
-" Ex: mkdir -p 'VIMROOT\vimfiles\view'
-" Step 2: create package directories
-" Ex: mkdir -p 'VIMROOT\pack\bundle\{start,opt}'
-" Step 3: Copy colorshemes to the vim executable directory
-" Ex: cp VIMROOT\pack\bundle\vim-colors-solarized\colors\solarized.vim 'VIMROOT\vim82\colors\'
-
 " # UNIVERSAL VARIABLES {
 " ##################################
 function! SetUniversalVariables()
-
-  " Assigns root path based on OS - affects value of ~/
-  if has("gui_win32")
-    let $HOME = 'C:/Users/Alex Bilson'
-  endif
 
   " Sets the $MYVIMRC to the custom location
   if !exists('$MYVIMRC')
@@ -258,55 +245,6 @@ function! SetAutocommands()
 
 endfunction
 " }
-" # WINDOWS OPTIONS {
-" ##################################
-function! SetWindowsOptions()
-
-  " **********************************
-  " * WINDOWS SETTINGS
-  " **********************************
-
-  " Set the font to something more pleasant
-  set guifont=Courier_New:h12:cANSI
-
-  " Sets the color scheme
-  " Note: If I update vim, may need to replace the file into the colors folder
-  set background=light
-  colorscheme monokai "solarized
-
-  " **********************************
-  " * POWERSHELL SETTINGS
-  " **********************************
-
-  " Toggle the shell path between powershell and cmd
-  " Note: the ampersand (&) is used to set the variable
-  "       directly.  set shell= will not work in this
-  "       context
-  let g:powershell_path = 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe'
-  let g:cmd_path = 'C:\Windows\System32\cmd.exe'
-  let g:using_powershell = 1
-
-  function! ToggleShell()
-
-    if g:using_powershell
-      let &shell=g:powershell_path
-      let g:using_powershell = 0
-    else
-      let &shell=g:cmd_path
-      let g:using_powershell = 1
-    endif
-
-  endfunction
-
-  " **********************************
-  " * WINDOWS AUTOCOMMANDS
-  " **********************************
-
-  " Starts gvim as a maximized window
-  au GUIEnter * simalt ~x
-
-endfunction
-" }
 " # MAC OPTIONS {
 " ##################################
 function! SetMacOptions()
@@ -351,7 +289,7 @@ function! SetCommonFunctions()
 " Opens a new window with notes about commands I want to learn
   function! ShowCommandList()
 
-    6split ~/Dropbox/.vim/commands.md
+    6split ~/.vim/commands.md
 
   endfunction
 
@@ -450,24 +388,6 @@ function! SetCommonFunctions()
   " Sets the toggle to an easy-to-use map
   nnoremap <Leader>w :call ToggleWritingStyle()<CR>
 
-  " Runs ctags at project root and sets tags to the generated file
-  function! RunCtags()
-
-    if has("gui_win32")
-      execute("!ctags -R C:\Users\abilson\Dropbox\AccountingProgram\src\*")
-      set tags="C:\Users\abilson\Dropbox\AccountingProgram\src\tags"
-    endif
-
-    if has("gui_macvim")
-      echo "not configured"
-    endif
-
-  endfunction
-
-  " Sets ctags to an easy-to-use map
-  " disabling for now
-  " nnoremap <Leader>e :call RunCtags()<CR>
-
   " Adds a carriage return after closing HTML tags to make them easier to read
   function! ParseHTML()
 
@@ -477,10 +397,6 @@ function! SetCommonFunctions()
 
   " Converts the current content to HTML from Markdown and copies to the clipboard
   function! CopyMarkdownToHTML()
-
-  if has("gui_win32")
-    execute("%w ! cat | pandoc -f markdown -t html | clip")
-  endif
 
   if has("gui_macvim")
     execute("%w ! cat | pandoc -f markdown -t html | pbcopy")
@@ -746,70 +662,6 @@ nnoremap <Leader>sp :OmniSharpStopServer<CR>
 
 endfunction
 " }
-" }
-" # IMPORT PLUGINS WITH VUNDLE {
-" ##################################
-function! ImportPluginsWithVundle()
-
-  " This has been deprecated in favor of native package loading
-
-  " Required setting (for some reason)
-  filetype on
-  filetype off
-
-  " Add Vundle to the runtimepath
-  let &runtimepath = '~/Dropbox/.vim/bundle/Vundle.vim' . ',' . &runtimepath
-  call vundle#begin('~/Dropbox/.vim/bundle')
-
-  " **********************************
-  " * Add Plugins
-  " **********************************
-  " Common plugins
-  Plugin 'VundleVim/Vundle.vim'
-  Plugin 'scrooloose/nerdtree'
-  Plugin 'vim-airline/vim-airline'
-  Plugin 'easymotion/vim-easymotion'
-  Plugin 'ctrlpvim/ctrlp.vim'
-
-  " Colorschemes
-  Plugin 'sickill/vim-monokai'
-  Plugin 'altercation/vim-colors-solarized'
-
-  " Plugins for writing
-  Plugin 'reedes/vim-lexical'
-  Plugin 'reedes/vim-wordy'
-  Plugin 'kana/vim-textobj-user'
-  Plugin 'reedes/vim-textobj-quote'
-  Plugin 'junegunn/goyo.vim'
-  Plugin 'junegunn/limelight.vim'
-
-  " General coding plugins
-  Plugin 'majutsushi/tagbar'
-  Plugin 'honza/vim-snippets'
-
-  if has("python")
-    " Ultisnips requires python 2.7 or above
-    Plugin 'SirVer/ultisnips'
-  endif
-
-  Plugin 'vim-syntastic/syntastic'
-
-  " Plugins for coding specific languages
-  Plugin 'vim-scripts/Pydiction'
-  Plugin 'pangloss/vim-javascript'
-  Plugin 'mxw/vim-jsx'
-  Plugin 'leshill/vim-json'
-  " Enable this later as a linter tool
-  " Plugin 'w0rp/ale'
-
-  " Ends Vundle execution?
-  call vundle#end()
-
-  " Allows filetype plugins
-  filetype plugin on
-
-endfunction
-" }
 " # Execute My Settings {
 " ##################################
 function! ExecuteSettings()
@@ -820,19 +672,7 @@ function! ExecuteSettings()
   call SetClipboardMappings()
   call SetAutocommands()
   call SetCommonFunctions()
-
-  if has("gui_win32")
-    call SetWindowsOptions()
-  endif
-
-  if has("gui_macvim")
-    call SetMacOptions()
-  endif
-
-  " Adds all the packages to the runtimepath, making them available
-  " for every instance of vim.  Replaces /bundle path with /plugin
-  "execute pathogen#infect('~/Dropbox/.vim/bundle/{}')
-  " call ImportPluginsWithVundle()
+  call SetMacOptions()
 
   " adds package path to runtime
   set packpath+=~/.vim
@@ -841,17 +681,17 @@ function! ExecuteSettings()
   " Set options for all my plugins
   call SetNerdtreeOptions()
   call SetEasyMotionOptions()
-  call SetSyntasticOptions()
+  "call SetSyntasticOptions()
   call SetVimAirlineOptions()
   "call SetPydictionOptions()
   "call SetVimJavascriptOptions()
-  call SetLimelightOptions()
-  call SetVimTextobjQuoteOptions()
-  call SetTagbarOptions()
+  "call SetLimelightOptions()
+  "call SetVimTextobjQuoteOptions()
+  "call SetTagbarOptions()
   "call SetUltisnipsOptions()
-  call SetAsyncCompleteOptions()
-  call SetAleOptions()
-  call SetOmniSharpOptions()
+  "call SetAsyncCompleteOptions()
+  "call SetAleOptions()
+  "call SetOmniSharpOptions()
 
 endfunction
 " }
