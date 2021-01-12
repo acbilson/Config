@@ -43,7 +43,7 @@ top_reader_info () {
 
 	# retrieves IP address info for top viewers
 	</tmp/top_viewers.txt xargs -I % curl -s http://ipinfo.io/% \
-			| jq -r '.ip + ":\t\t" + .city + ", " + .region + " " + .country' \
+			| jq -r '.ip + ":\t\t" + .city + ", " + .region + " " + .country + " " + .org' \
 			> /tmp/top_viewer_info.txt
 
 	cat /tmp/top_viewer_info.txt

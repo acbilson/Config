@@ -1,13 +1,3 @@
-https://github.com/dense-analysis/ale
-https://github.com/prabirshrestha/asyncomplete.vim.git
-https://github.com/mattn/emmet-vim.git
-https://github.com/junegunn/goyo.vim.git
-https://github.com/junegunn/limelight.vim.git
 https://github.com/scrooloose/nerdtree.git
-https://github.com/OmniSharp/omnisharp-vim.git
-https://github.com/leafgarland/typescript-vim.git
 https://github.com/vim-airline/vim-airline.git
 https://github.com/easymotion/vim-easymotion.git
-https://github.com/pangloss/vim-javascript.git
-https://github.com/ledger/vim-ledger
-https://github.com/PProvost/vim-ps1.git

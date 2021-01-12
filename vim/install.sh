@@ -4,7 +4,7 @@ local ORIG=$(pwd)
 
 local CONFIG_DIR=$HOME/source/config/vim
 local SYM_DIR=$HOME
-local OS=macos
+local OS=debian
 
 [[ -d $CONFIG_DIR ]] || { echo "\$CONFIG_DIR path does not exist. Exiting..." && return 0 }
 [[ -d $SYM_DIR ]] || { echo "\$SYM_DIR path does not exist. Exiting..." && return 0 }

@@ -247,22 +247,15 @@ endfunction
 " }
 " # MAC OPTIONS {
 " ##################################
-function! SetMacOptions()
+function! SetDebianOptions()
 
   " **********************************
-  " * MAC SETTINGS
+  " * DEBIAN SETTINGS
   " **********************************
-
-  " Set the font to something more pleasant
-  set guifont=Courier:h16
 
   " Sets the color scheme
   set background=light
   colorscheme monokai
-
-  " Expands MacVim to fill the screen
-  set lines=999
-  set columns=999
 
 endfunction
 " }
@@ -672,7 +665,7 @@ function! ExecuteSettings()
   call SetClipboardMappings()
   call SetAutocommands()
   call SetCommonFunctions()
-  call SetMacOptions()
+  call SetDebianOptions()
 
   " adds package path to runtime
   set packpath+=~/.vim
