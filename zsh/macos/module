@@ -4,21 +4,41 @@
 # FUNCTIONS
 # # # # # # # #
 
+## securely publishes sensitive files to OneDrive
+function secretpub () {
+
+  DEST=/Users/Shared/OneDrive/Software/Secure
+  ORIG=$(pwd)
+  mkdir ~/secret_tmp
+
+  # stores ssh keys and config
+  find ~/.ssh -type f ! -iname 'known_hosts' | tar -czvf ssh.tar.gz -T -
+  gpg -o ssh-safe.tar.gz.gpg -e -r acbilson@gmail.com ssh.tar.gz
+  mv -f ssh-safe.tar.gz.gpg $DEST/
+}
+
 ## securely publishes my journal entries to OneDrive
 function journalpub () {
 
+  DEST=/Users/Shared/OneDrive/Software/Secure
   ORIG=$(pwd)
-  cd ~/Journal > /dev/null
+  cd ~/journal > /dev/null
   find . -name "*.txt" | tar -czvf journals.tar.gz -T -
   gpg -o journals-safe.tar.gz.gpg -e -r acbilson@gmail.com journals.tar.gz
-  mv -f journals-safe.tar.gz.gpg ~/OneDrive/Documents/Journals/journals-safe.tar.gz.gpg
+  mv -f journals-safe.tar.gz.gpg $DEST/
   rm journals.tar.gz
   cd "$ORIG" > /dev/null
+}
 
-  # to decrypt:
-  # gpg --decrypt ~/OneDrive/Documents/Journals/journals-safe.tar.gz.gpg > journals.tar.gz
-  # mkdir decrypted_files
-  # tar -xvf journals.tar.gz -C decrypted_files
+function journalextract () {
+
+  DEST=/Users/Shared/OneDrive/Software/Secure
+  ORIG=$(pwd)
+  cd ~/journal > /dev/null
+  gpg --decrypt $DEST/journals-safe.tar.gz.gpg > journals.tar.gz
+  tar -xf journals.tar.gz
+  rm journals.tar.gz
+  cd "$ORIG" > /dev/null
 }
 
 ## prints out last year's memoir

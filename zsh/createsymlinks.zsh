@@ -2,7 +2,7 @@
 
 local CONFIG_DIR=$HOME/source/config/zsh
 local SYM_DIR=$HOME
-local OS=debian
+local OS=macos
 
 [[ -d $CONFIG_DIR ]] || { echo "\$CONFIG_DIR path does not exist. Exiting..." && return 0 }
 [[ -d $SYM_DIR ]] || { echo "\$SYM_DIR path does not exist. Exiting..." && return 0 }
