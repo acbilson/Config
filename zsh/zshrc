@@ -43,3 +43,5 @@ for file in $FILES; do
 done
 
 # End custom configurations from optional files
+
+source /Users/acbilson/.config/broot/launcher/bash/br

@@ -9,12 +9,22 @@ function secretpub () {
 
   DEST=/Users/Shared/OneDrive/Software/Secure
   ORIG=$(pwd)
-  mkdir ~/secret_tmp
+
+  # stores .env and other configs
+  cd ~/safe > /dev/null
+  find . -type f | tar -czvf env.tar.gz -T -
+  gpg -o env-safe.tar.gz.gpg -e -r acbilson@gmail.com env.tar.gz
+  mv -f env-safe.tar.gz.gpg $DEST/
+  rm env.tar.gz
 
   # stores ssh keys and config
-  find ~/.ssh -type f ! -iname 'known_hosts' | tar -czvf ssh.tar.gz -T -
+  cd ~/.ssh > /dev/null
+  find . -type f ! -iname 'known_hosts' | tar -czvf ssh.tar.gz -T -
   gpg -o ssh-safe.tar.gz.gpg -e -r acbilson@gmail.com ssh.tar.gz
   mv -f ssh-safe.tar.gz.gpg $DEST/
+  rm ssh.tar.gz
+
+  cd "$ORIG" > /dev/null
 }
 
 ## securely publishes my journal entries to OneDrive

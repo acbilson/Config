@@ -1,1 +1,2 @@
 https://github.com/crusoexia/vim-monokai.git
+https://github.com/aklt/plantuml-syntax.git

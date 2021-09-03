@@ -149,6 +149,12 @@ function! SetBasicMappings()
   nnoremap <Leader>m z=
 
   " **********************************
+  " * NAVIGATION
+  " **********************************
+  " adds content path for navigation
+  set path+=~/source/chaos-content
+
+  " **********************************
   " * MISC
   " **********************************
   " clears the search highlighting
@@ -227,8 +233,8 @@ function! SetAutocommands()
     autocmd BufWinEnter .vimrc setlocal foldmethod=marker
 
     " Does the same for markdown
-    autocmd FileType markdown setlocal foldmarker={,}
-    autocmd FileType markdown setlocal foldmethod=marker
+    " autocmd FileType markdown setlocal foldmarker={,}
+    " autocmd FileType markdown setlocal foldmethod=marker
 
   augroup END
 
@@ -240,6 +246,15 @@ function! SetAutocommands()
 
     " Sets encoding to unicode when working with Markdown
     autocmd FileType markdown setlocal encoding=utf-8
+
+    " adds Markdown suffix to navigate files that don't specify an ending
+    autocmd FileType markdown setlocal suffixesadd=.md
+
+    " if file is not found, remove leading slash and navigate again
+    autocmd FileType markdown setlocal includeexpr=substitute(v:fname,'^\/','','g')
+
+    " updates lastmod to today when the file is saved. 'norm' jumps back to origin with marker
+    autocmd BufWritePre *.md exe "norm mz"|exe '%s/\(^lastmod = \"\).*\(\"\)/\1'.strftime("%Y-%m-%d %T").'\2/e'|norm 'z
 
   augroup END
 
@@ -261,8 +276,8 @@ function! SetMacOptions()
   colorscheme monokai
 
   " Expands MacVim to fill the screen
-  set lines=999
-  set columns=999
+  "set lines=999
+  "set columns=999
 
 endfunction
 " }
