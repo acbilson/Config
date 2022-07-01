@@ -1,8 +1,0 @@
-#!/bin/bash
-
-# to temporarily bypass an alias that overwrites the original
-# prepend '\'. e.g. >\ls 
-alias ls="ls -lAhF --group-directories-first --time-style=+'%Y/%m/%d %k:%M' --color=auto"
-alias ps="ps -eo pid,euser,stime,cmd --forest"
-alias weblog="cat /var/log/nginx/simple-access.log /var/log/nginx/simple-access.log.1 | grep -v '216.80.113.4' | awk -F '|' '{print \$2,\$4,\$5}' | sort -k 4 | uniq"
-alias ports="netstat -lt"

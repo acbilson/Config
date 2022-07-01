@@ -1,8 +1,0 @@
-#!/bin/zsh
-
-# Loads Git SSH key
-if [ -f ~/.ssh/git_rsa ]; then
-    # stops now that I have a passphrase
-    #ssh-add ~/.ssh/git_rsa
-fi
-
