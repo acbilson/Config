@@ -1,4 +1,9 @@
 #!/bin/sh
+. ./helpers.sh
+
+make_folders() {
+	mkdir -p ~/.config/nvim/pack/bundle/{start,opt}
+}
 
 install_plugins()
 {
@@ -22,43 +27,27 @@ install_plugins()
 	cd $start
 }
 
-echo "Starting nvim installation."
+install_start_repos() {
+	install_plugins start-repos.txt start
+}
 
-if ! type "nvim" > /dev/null; then
+install_start_repos() {
+	install_plugins opt-repos.txt opt
+}
+
+print_start "Starting nvim installation."
+
+if skip_missing nvim; then
 	echo 'The nvim editor does not exist. Please install the executable to continue.'
-	return 0
-fi
-
-
-if ! type "git" > /dev/null; then
-	echo 'The git exe does not exist. Either add packages directly to ~/.config/nvim/pack/bundle/{start,opt} or install the executable.'
 else
-	while true; do
-		read -p 'Add package directories opt and start (y/n)? ' add_package
-		case $add_package in
-			[Yy]* ) mkdir -p ~/.config/nvim/pack/bundle/{start,opt}; break;;
-			[Nn]* ) break;;
-			* ) echo "Please answer yes or no.";;
-		esac
-	done
+	ask_to_install make_folders 'Add package directories opt and start'
 
-	while true; do
-		read -p 'Install runtime plugins (y/n)? ' install_runtime
-		case $install_runtime in
-			[Yy]* ) install_plugins start-repos.txt start; break;;
-			[Nn]* ) break;;
-			* ) echo "Please answer yes or no.";;
-		esac
-	done
-
-	while true; do
-		read -p 'Install optional plugins (y/n)? ' install_optional
-		case $install_optional in
-			[Yy]* ) install_plugins opt-repos.txt opt; break;;
-			[Nn]* ) break;;
-			* ) echo "Please answer yes or no.";;
-		esac
-	done
+	if skip_missing git; then
+		echo 'The git exe does not exist. Either add packages directly to ~/.config/nvim/pack/bundle/{start,opt} or install the executable.'
+	else
+		ask_to_install install_start_repos 'Install runtime plugins'
+		ask_to_install install_opt_repos 'Install optional plugins'
+	fi
 fi
 
-echo "Ending installation."
+print_end "Ending installation."
